@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import configparser
+from discord import app_commands
 
 
 class Welcome(commands.Cog):
@@ -37,6 +38,28 @@ class Welcome(commands.Cog):
             self.welcome_channel_id = int(config['channel_id']['WELCOME_CHANNEL_ID'])
         except Exception as e:
             print(f"Exception {e} occurred while loading configfile")
+
+    def update_config(self, category, key, new_value):
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        if category in config:
+            config[category][key] = str(new_value)
+        else:
+            config[category] = {key: str(new_value)}
+
+        with open('config.ini', 'w') as configfile:
+            config.write(configfile)
+
+    @app_commands.command(name='set_welcome_channel', description="Returns the 10 most used words")
+    @app_commands.describe(channel="Word status of the user.")
+    async def set_welcome_channel(self, interaction: discord.Interaction, channel: discord.TextChannel):
+        try:
+            self.update_config(category='channel_id', key='WELCOME_CHANNEL_ID', new_value=channel.id)
+            await interaction.response.send_message(f'Welcome messages set to {channel.mention}', ephemeral=True)
+            self.load_config()
+        except Exception as e:
+            await interaction.response.send_message(f"An Error {e} occurred.", ephemeral=True)
+            print(f"Error {e} occurred!")
 
 
 async def setup(client: commands.Bot):
