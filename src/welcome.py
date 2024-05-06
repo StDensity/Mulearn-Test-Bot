@@ -4,6 +4,8 @@ import configparser
 from discord import app_commands
 
 
+
+
 class Welcome(commands.Cog):
     def __init__(self, client):
         self.client = client

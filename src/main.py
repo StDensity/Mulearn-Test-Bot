@@ -15,7 +15,7 @@ class Client(commands.Bot):
         intents.message_content = True
         intents.members = True
         super().__init__(command_prefix="!", intents=intents)
-        self.cogs_list = ["word_counter", "welcome"]
+        self.cogs_list = ["word_counter", "welcome", "role_selector"]
 
 
     async def on_ready(self):

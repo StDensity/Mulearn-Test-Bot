@@ -9,7 +9,7 @@ class WordCounter(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.sql = Sql()
+        self.sql = Sql('user_words', 'discord_id', 'message')
 
     @commands.Cog.listener()
     async def on_message(self, ctx: discord.Message):
@@ -17,7 +17,6 @@ class WordCounter(commands.Cog):
             # To make sure the bot is not responding to itself.
             if ctx.author.id == self.client.user.id:
                 return
-            print(ctx.author.id)
             self.sql.add_message(ctx.author.id, ctx.content)
             await ctx.channel.send(f"```{self.sql.get_table()}```")
         except Exception as e:
@@ -30,7 +29,6 @@ class WordCounter(commands.Cog):
             word_counts = Counter()
             if user:
                 user_message = self.sql.get_message(user.id)
-                print(user_message)
                 word_counts.update(user_message.split())
                 embed_title_name = f"By {user.name}"
             else:
