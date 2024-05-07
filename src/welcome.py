@@ -42,15 +42,18 @@ class Welcome(commands.Cog):
             print(f"Exception {e} occurred while loading configfile")
 
     def update_config(self, category, key, new_value):
-        config = configparser.ConfigParser()
-        config.read('config.ini')
-        if category in config:
-            config[category][key] = str(new_value)
-        else:
-            config[category] = {key: str(new_value)}
+        try:
+            config = configparser.ConfigParser()
+            config.read('config.ini')
+            if category in config:
+                config[category][key] = str(new_value)
+            else:
+                config[category] = {key: str(new_value)}
 
-        with open('config.ini', 'w') as configfile:
-            config.write(configfile)
+            with open('config.ini', 'w') as configfile:
+                config.write(configfile)
+        except Exception as e:
+            print(f"Exception {e} occurred while updating configfile")
 
     @app_commands.command(name='set_welcome_channel', description="Returns the 10 most used words")
     @app_commands.describe(channel="Word status of the user.")
