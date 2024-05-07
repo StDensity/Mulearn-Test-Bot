@@ -7,4 +7,4 @@ A bot for mulearn internship task.
 4. Run main.py
 
 ## Note
-I'm using database from https://www.phpmyadmin.co/. It provide one database with 5 MB storage for free. 
+The project is using database from https://www.phpmyadmin.co/. It provide one database with 5 MB storage for free. 
